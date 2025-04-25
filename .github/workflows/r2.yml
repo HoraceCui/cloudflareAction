@@ -4,11 +4,40 @@ name: R2_CI
 
 on:
   workflow_dispatch:
+
+env:
+  DOMAIN1: 8195616.xyz
+  DOMAIN2: cuiyinhu.site
+  CERT_DIR: ./certs
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install acme.sh
+        run: |
+          git clone https://github.com/acmesh-official/acme.sh.git
+          cd acme.sh
+          ./acme.sh --install  --force
+
+      - name: Export Cloudflare credentials
+        run: |
+          echo "export CF_Email=${{ secrets.CF_Email }}" >> ~/.bashrc
+          echo "export CF_Email=${{ secrets.CF_Email }}" >> ~/.bashrc
+          echo "export CF_Key=${{ secrets.CF_Key }}" >> ~/.profile
+          echo "export CF_Key=${{ secrets.CF_Key }}" >> ~/.profile
+
+      - name: Issue cert via Cloudflare DNS
+        env:
+          CF_Email: ${{ secrets.CF_Email }}
+          CF_Key: ${{ secrets.CF_Key }}
+        run: |
+          echo $CF_Email
+          echo $CF_Key
+          # ~/.acme.sh/acme.sh 
+
 
       - name: Install AWS CLI
         run: |
