@@ -36,8 +36,8 @@ jobs:
           CF_Email: ${{ secrets.CF_Email }}
           CF_Key: ${{ secrets.CF_Key }}
         run: |
-          ~/.acme.sh --issue --dns dns_cf -d "*.$DOMAIN1" -k 4096 --force
-          ~/.acme.sh --issue --dns dns_cf -d "*.$DOMAIN2" -k 4096 --force
+          ~/.acme.sh/acme.sh --issue --dns dns_cf -d "*.$DOMAIN1" -k 4096 --force
+          ~/.acme.sh/acme.sh --issue --dns dns_cf -d "*.$DOMAIN2" -k 4096 --force
 
       - name: Install cert to folder
         run: |
