@@ -43,8 +43,8 @@ jobs:
       - name: Install cert to folder
         run: |
           mkdir -p $CERT_DIR $CERT_DIR1 $CERT_DIR2
-          ~/.acme.sh/acme.sh --install-cert -d $DOMAIN1 --fullchain-file "$CERT_DIR1/fullchain.cer" --key-file "$CERT_DIR1/private.key"
-          ~/.acme.sh/acme.sh --install-cert -d $DOMAIN1 --fullchain-file "$CERT_DIR1/fullchain.cer" --key-file "$CERT_DIR1/private.key"
+          ~/.acme.sh/acme.sh --install-cert -d "*.$DOMAIN1" --fullchain-file "$CERT_DIR1/fullchain.cer" --key-file "$CERT_DIR1/private.key"
+          ~/.acme.sh/acme.sh --install-cert -d "*.$DOMAIN2" --fullchain-file "$CERT_DIR2/fullchain.cer" --key-file "$CERT_DIR2/private.key"
 
       - name: Install AWS CLI
         run: |
