@@ -1,0 +1,67 @@
+# This is a basic workflow to help you get started with Actions
+
+name: R2-1_CI
+
+on:
+  workflow_dispatch:
+
+env:
+  DOMAIN1: 8195616.xyz
+  DOMAIN2: cuiyinhu.site
+  CERT_DIR: ./certs
+  CERT_DIR1: ./certs/8195616.xyz
+  CERT_DIR2: ./certs/cuiyinhu.site
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install acme.sh
+        run: |
+          git clone https://github.com/acmesh-official/acme.sh.git
+          cd acme.sh
+          ./acme.sh --install  --force
+
+      - name: Export Cloudflare credentials
+        run: |
+          echo "export CF_Email=${{ secrets.CF_Email }}" >> ~/.bashrc
+          echo "export CF_Email=${{ secrets.CF_Email }}" >> ~/.bashrc
+          echo "export CF_Key=${{ secrets.CF_Key }}" >> ~/.profile
+          echo "export CF_Key=${{ secrets.CF_Key }}" >> ~/.profile
+
+      - name: Issue cert via Cloudflare DNS
+        env:
+          CF_Email: ${{ secrets.CF_Email }}
+          CF_Key: ${{ secrets.CF_Key }}
+        run: |
+          ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+          ~/.acme.sh/acme.sh --issue --dns dns_cf -d "*.$DOMAIN1" -k 4096 --force
+          ~/.acme.sh/acme.sh --issue --dns dns_cf -d "*.$DOMAIN2" -k 4096 --force
+
+      - name: Install cert to folder
+        run: |
+          mkdir -p $CERT_DIR 
+          ~/.acme.sh/acme.sh --install-cert -d "*.$DOMAIN1" \
+            --fullchain-file "$CERT_DIR/$DOMAIN1.fullchain.cer" \
+            --key-file "$CERT_DIR/$DOMAIN1.private.key"
+          ~/.acme.sh/acme.sh --install-cert -d "*.$DOMAIN2" \
+            --fullchain-file "$CERT_DIR/$DOMAIN2.fullchain.cer" \
+            --key-file "$CERT_DIR/$DOMAIN2.private.key"
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install --upgrade awscli
+
+      - name: Upload certs to Cloudflare R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          aws s3 cp $CERT_DIR s3://${{ secrets.R2_BUCKET }}/certs/ \
+            --endpoint-url ${{ secrets.R2_ENDPOINT }} \
+            --recursive
