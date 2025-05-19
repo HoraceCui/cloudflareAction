@@ -6,11 +6,9 @@ on:
   workflow_dispatch:
 
 env:
-  DOMAIN1: 8195616.xyz
-  DOMAIN2: cuiyinhu.site
+  DOMAIN1: ${{ vars.DOMAIN1 }}
+  DOMAIN2: ${{ vars.DOMAIN2 }}
   CERT_DIR: ./certs
-  CERT_DIR1: ./certs/8195616.xyz
-  CERT_DIR2: ./certs/cuiyinhu.site
 
 jobs:
   build:
