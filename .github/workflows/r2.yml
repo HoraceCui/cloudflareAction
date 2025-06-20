@@ -8,9 +8,11 @@ on:
 env:
   DOMAIN1: 8195616.xyz
   DOMAIN2: cuiyinhu.site
+  #DOMAIN3: 102808.xyz
   CERT_DIR: ./certs
   CERT_DIR1: ./certs/8195616.xyz
   CERT_DIR2: ./certs/cuiyinhu.site
+  #CERT_DIR3: ./certs/102808.xyz
 
 jobs:
   build:

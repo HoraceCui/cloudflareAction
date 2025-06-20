@@ -8,6 +8,7 @@ on:
 env:
   DOMAIN1: ${{ vars.DOMAIN1 }}
   DOMAIN2: ${{ vars.DOMAIN2 }}
+  DOMAIN3: ${{ vars.DOMAIN3 }}
   CERT_DIR: ./certs
 
 jobs:
@@ -37,6 +38,7 @@ jobs:
           ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
           ~/.acme.sh/acme.sh --issue --dns dns_cf -d "*.$DOMAIN1" -k 4096 --force
           ~/.acme.sh/acme.sh --issue --dns dns_cf -d "*.$DOMAIN2" -k 4096 --force
+          ~/.acme.sh/acme.sh --issue --dns dns_cf -d "*.$DOMAIN3" -k 4096 --force
 
       - name: Install cert to folder
         run: |
@@ -47,6 +49,9 @@ jobs:
           ~/.acme.sh/acme.sh --install-cert -d "*.$DOMAIN2" \
             --fullchain-file "$CERT_DIR/$DOMAIN2.fullchain.cer" \
             --key-file "$CERT_DIR/$DOMAIN2.private.key"
+          ~/.acme.sh/acme.sh --install-cert -d "*.$DOMAIN3" \
+            --fullchain-file "$CERT_DIR/$DOMAIN3.fullchain.cer" \
+            --key-file "$CERT_DIR/$DOMAIN3.private.key"
 
       - name: Install AWS CLI
         run: |
