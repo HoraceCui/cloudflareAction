@@ -34,9 +34,9 @@ jobs:
 
       - name: Issue cert via Cloudflare DNS
         run: |
-          echo $CF_Email
-          echo $CF_Key
-          echo $R2_ACCESS_KEY_ID
-          echo $R2_SECRET_ACCESS_KEY
-          echo $R2_BUCKET
-          echo $R2_ENDPOINT
+          echo ${CF_Email:0:4}****
+          echo ${CF_Key}****
+          echo ${R2_ACCESS_KEY_ID}****
+          echo ${R2_SECRET_ACCESS_KEY}****
+          echo ${R2_BUCKET}****
+          echo ${R2_ENDPOINT}****
