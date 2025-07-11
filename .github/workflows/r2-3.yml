@@ -17,26 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install acme.sh
-        run: |
-          git clone https://github.com/acmesh-official/acme.sh.git
-          cd acme.sh
-          ./acme.sh --install  --force
 
       - name: Export Cloudflare credentials
         run: |
-          echo "CF_Email=${{ secrets.CF_Email }}" >> $GITHUB_ENV
-          echo "CF_Key=${{ secrets.CF_Key }}" >> $GITHUB_ENV
-          echo "R2_ACCESS_KEY_ID=${{ secrets.R2_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-          echo "R2_SECRET_ACCESS_KEY=${{ secrets.R2_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-          echo "R2_BUCKET=${{ secrets.R2_BUCKET }}" >> $GITHUB_ENV
-          echo "R2_ENDPOINT=${{ secrets.R2_ENDPOINT }}" >> $GITHUB_ENV
+          echo "CF_Email=${{ secrets.CF_Email }}" >> test1.txt
+          echo "CF_Key=${{ secrets.CF_Key }}" >> test1.txt
+          echo "R2_ACCESS_KEY_ID=${{ secrets.R2_ACCESS_KEY_ID }}" >> test1.txt
+          echo "R2_SECRET_ACCESS_KEY=${{ secrets.R2_SECRET_ACCESS_KEY }}" >> test1.txt
+          echo "R2_BUCKET=${{ secrets.R2_BUCKET }}" >> test1.txt
+          echo "R2_ENDPOINT=${{ secrets.R2_ENDPOINT }}" >> test1.txt
 
       - name: Issue cert via Cloudflare DNS
         run: |
-          echo ${CF_Email:0:4}****
-          echo ${CF_Key}****
-          echo ${R2_ACCESS_KEY_ID}****
-          echo ${R2_SECRET_ACCESS_KEY}****
-          echo ${R2_BUCKET}****
-          echo ${R2_ENDPOINT}****
+          cat test1.txt
